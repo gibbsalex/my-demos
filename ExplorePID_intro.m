@@ -35,6 +35,16 @@ bode(Dpd)
 %Proportinal Integral Controller
 Dpi = Dp + Di
 bode(Dpi)
+%%
+close all;
+figure; 
+rlocus(D)
+
+K2 = 6;
+D2 = K2*Td* tf([1 1/Td 1/(Td*Ti)], [1 0] )
+figure;
+rlocus(D2)
+
 
 %% Changing Ti and Td
 close all;
