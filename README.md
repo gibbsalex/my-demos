@@ -10,3 +10,5 @@ To-Do
 - Vehicle dynamics and Control (Vehicle Dynamics and Control, Rajesh Rajamani, 2nd e)
 - Lateral and Longitudinal Control
 - Tracking algorithms
+- Nyquist Plot (RR)
+- Simulation using simulink
