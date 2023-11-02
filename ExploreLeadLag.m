@@ -25,3 +25,5 @@ bode(Dll)
 
 figure;
 plot([0.1:10^(4)], Dll)
+
+%THis needs a plant G before it can plot step
