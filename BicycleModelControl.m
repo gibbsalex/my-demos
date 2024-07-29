@@ -26,7 +26,51 @@ delta_track = theta_track;
 
 Kp = 0.5;% Get this into a PID
 
-%bikeRear(L, v, phi, x, y, delta, theta, dt)
+% xdot = Ax + Bu
+% x = x, y, theta
+% A = [v*cos(theta), v*sin(theta), v / (L/tan(delta))]
+% u = delta
+% control on delta
+% if state is off of line, update next turn with delta
+
+[new_x, new_y, new_theta] = bikeRear(L, v, x, y, delta(1), theta(1), dt)
+
+error_x = new_x - x(1)
+error_y = new_y - y(1)
+error_theta = new_theta - theta(1)
+
+new_delta = tan(error_y/error_x) 
+
+x(2) = new_x 
+y(2) = new_y
+theta(2) = new_theta
+
+[new_x, new_y, new_theta] = bikeRear(L, v, x(2), y(2), new_delta, theta(2), dt)
+
+error_x(2) = new_x - x(2)
+error_y(2) = new_y - y(2)
+error_theta(2) = new_theta - theta(2)
+
+for step = [1: 10]
+    [new_x, new_y, new_theta] = bikeRear(L, v, x(step), y(step), delta(step), theta(step), dt);
+
+    error_x(step) = new_x - x_track(step);
+    error_y(step) = new_y - y_track(step);
+    error_theta(step) = new_theta - tan(y_track(step)/x_track(step));
+    
+    x(step+1) = new_x;
+    y(step+1) = new_y;
+    delta(step+1) = error_theta(step)%tan(error_y(step)/error_x(step)) ; %maybe this should be the error in turning
+    theta(step+1) = new_theta;
+end
+
+plot(x_track, y_track, "LineWidth", 5)
+hold on;
+%plot(y)
+
+
+[x_f, y_f, x_r, y_r] = plotBike(x, y, L, theta)
+%% Old Appendix - Old code with 4 states
 for step = [1: 10]
     %[new_x, new_y, new_theta, new_delta] = bikeRear(L, v, phi, x(step), y(step), delta(step), theta(step), dt);
     x_dot(step) = v*cos(theta(step));
