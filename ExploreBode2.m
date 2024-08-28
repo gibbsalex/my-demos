@@ -31,3 +31,14 @@ subplot(2, 3, 3)
 step(T)
 legend(AutoUpdate="on")
 % bode(T) plots the plant but we look for behavior in OL
+
+%%
+
+t = linspace(0,2*pi)
+
+y1 = 1*sin(1*t + 0)
+plot(t, y1)
+hold on
+
+y2 = 1*sin(1*t + pi) %phase shift 90 deg
+plot(t, y2)
