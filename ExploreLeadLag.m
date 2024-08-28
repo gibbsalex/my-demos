@@ -1,29 +1,23 @@
 %% Explore Lead lag
 % Uisng RR from Prof. Bewley
 
-%Status: Didn't get a chance to compare PID and LeadLag - Incomplete
+%Status: Completed lead lag analysis + overleaf chapter
 clear; clc; close all;
 
 %Define
 K = 60 * 2000 * 0.95
-Dlead = tf([1 100], [1 1]) % p > z | p leads the z
-Dlag = tf([1 100], [1 2000]) % p < z  | p lags the z
+Dlead = tf([1 -100], [1 -1]) % p > z | p leads the z
+Dlag = tf([1 -1], [1 -100]) % p < z  | p lags the z
 Dll = K * Dlead * Dlag
 
-%Compare to PID
-Ti = 200;
-Td = 0.005;
-Kp = 12000;
+%% analyze bode plots
+bode(Dlead) % looks like a low pass filter with a pos. phas bump at freq 10
+figure()
+bode(Dlag) % looks like a high pass filter with a neg. phas dip at freq 10
 
-Dpid = Kp*Td* tf([1 1/Td 1/(Td*Ti)], [1 0] )
+%% analyze the root locus
+figure()
+rlocus(Dlead) %zero @ 100, pole @ 1 - straight line between the two
+figure()
+rlocus(Dlag) %zero @ 1, pole @ 100 - straight line between the two
 
-%Plot Bode
-figure;
-bode(Dpid)
-hold on;
-bode(Dll)
-
-figure;
-plot([0.1:10^(4)], Dll)
-
-%THis needs a plant G before it can plot step
