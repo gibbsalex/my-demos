@@ -1,0 +1,36 @@
+L1 - Feedback Control
+1. Stabilization about a fixed point, regional, global, and semiglobal stabilization
+2. Stabilization by state feedback control
+3. Stabilization by output feedback control
+4. Integral control
+
+L2 - Feedback Linearization of SISO systems
+1. Feedback linearizable systems
+2. Input-output linearization
+3. Full-state linearization
+4. State feedback control
+
+L3 - Feedback linearization of MIMO systems
+1. Introduction
+2. Vector relative degree
+3. What if no relative degree exists
+
+L4 - Nonlinear accessibility, controllability, and observability
+1. Introduction
+2. Accessibility and controllability
+3. The linear controllability test
+4. Nonlinear tests for (strong)accessibility
+5. Nonlinear tests for controllability
+6. Observability
+
+L5 - Feedback stabilization
+1. Introduction
+2. Asymptotic controllability
+3. Control-Lyapunov Functions
+4. Obstructions
+5. When stabilization is possible
+
+L6 - Input-output Stability
+1. Introduction(Lie Spaces, and stability)
+2. Lie Stability of state-space models
+3. Feedback Connection: the small-gain theorem
