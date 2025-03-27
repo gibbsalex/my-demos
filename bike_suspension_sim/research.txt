@@ -1,0 +1,38 @@
+
+What is suspension performance?
+
+How do force graphs measure suspension performance?
+
+
+Terms---
+Impact Absorbtion:
+1. Leverage Ratio = wheel displacement to shock displacement
+2. wheel rate = leverage ratio + shock compression ratio
+Pedal Efficiency:
+3. AntiSquat
+4. Pedal Kickback
+
+3. Antirise
+
+wheel rate optimization: shock spring curve applied to leverage ratio to give force at wheel
+
+Good graphs---
+1. Force vs. Wheel Travel (spring curve recap, wheel rate comparison)
+2. Wheel Travel vs Time
+3. Force vs. Horizontal Speed
+
+
+
+Quarq ShockWiz
+- Measures suspension performance
+-- measures air pressure -> travel
+-- measures shaft speed -> how quickly the damper shaft is moving when hitting obstacles
+
+CASS DAQ
+
+Resources ---
+1. UW MassSpringDamper: https://faculty.washington.edu/seattle/physics227/reading/reading-3b.pdf
+2. Cass Labs
+--
+-- Kinematrix(optimization software)
+3. https://enduro-mtb.com/en/mtb-suspension-kinematics/

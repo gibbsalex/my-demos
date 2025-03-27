@@ -1,0 +1,32 @@
+Raspberry Pi Pico
+
+Anker Battery Pack
+
+Use the main.py to run automatically
+
+Goal: on button start begin recording data until button click
+
+Problem #1 - i2c, multi sensors
+Using two i2c bus channels on the pico didn't work
+Lots of debugging when I was hot swapping compnents. Likley confused the timing in the clock and data line.
+
+Starting over.
+- wire more directly to one channel
+- only 2 imu's because that is how many addresses I have
+- 
+
+Problem #2
+- found problem with frequency of recording
+-- very slow (17hz avg), saving to csv every sample fastest would be 15Hz
+-- changed code to append to a list and then save to a file
+-- with no delay, clock is too fast and error is thrown
+"MemoryError: memory allocation failed, allocating 376 bytes
+PROBLEM IN THONNY'S BACK-END: Exception while handling 'Run' (thonny.plugins.micropython.mp_back.ManagementError: Command output was not empty).
+See Thonny's backend.log for more info.
+You may need to press "Stop/Restart" or hard-reset your MicroPython device and try again.
+	Process ended with exit code 1."
+	RUNNING OUT OF RAM MEMORY. looking into rpi garbage collector
+Resolution:
+1. implemented the garbage collector, but I think I will always fill up the RAM
+
+RAM vs. Clock speed using the RPi Pico
