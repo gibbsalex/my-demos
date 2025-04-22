@@ -1,0 +1,23 @@
+
+Simulation Structure
+
+Environment
+- Earth
+- Gravity
+- Atmosphere
+
+Vehicle
+- Basic
+- Subsystems
+- configurations
+
+Engine
+- initialization
+- 6dof dynamics
+	(3 axial, 3 rotational(euler angles))
+- kinematics
+    * state equations to instantaneously determine orientation in sim
+
+
+Reference:
+1. learngandc.com
