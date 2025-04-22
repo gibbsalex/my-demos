@@ -1,7 +1,8 @@
 import math
 import numpy as np
+from tools.interpolators import fastInterp1
 
-def flat_earth_eom(t, x, amod):
+def flat_earth_eom(t, x, vmod, amod):
     """
     Arguments:
     t = time, secs, scalar
@@ -41,29 +42,78 @@ def flat_earth_eom(t, x, amod):
     p2_n_m = x[10]
     p3_n_m = x[11]
 
+    # compute trig operations on euler angles
+    c_phi = math.cos(phi_rad)
+    c_theta = math.cos(theta_rad)
+    c_psi = math.cos(psi_rad)
+    s_phi = math.sin(phi_rad)
+    s_theta = math.sin(theta_rad)
+    s_psi = math.sin(psi_rad)
+    t_theta = math.tan(theta_rad)
+
+
     # vehicle mass and moments of inertia
-    m_kg = amod["m_kg"]
-    Jxz_b_kgm2 = amod["Jxz_b_kgm2"]
-    Jxx_b_kgm2 = amod["Jxx_b_kgm2"]
-    Jyy_b_kgm2 = amod["Jyy_b_kgm2"]
-    Jzz_b_kgm2 = amod["Jzz_b_kgm2"]
+    m_kg = vmod["m_kg"]
+    Jxz_b_kgm2 = vmod["Jxz_b_kgm2"]
+    Jxx_b_kgm2 = vmod["Jxx_b_kgm2"]
+    Jyy_b_kgm2 = vmod["Jyy_b_kgm2"]
+    Jzz_b_kgm2 = vmod["Jzz_b_kgm2"]
 
-    # air data calc (TBD)
+    # current altitude
+    h_m = -p3_n_m
 
-    # atmosphere model (TBD)
+    # atmosphere model 
+    rho_interp_kgpm3 = 1.2
+    #rho_interp_kgpm3 = fastInterp1(amod["alt_m"], amod["rho_kgpm3"], h_m)
+    #c_interp_mp2 = fastInterp1(amod["alt_m"], amod["c_mps"], h_m)
+
+    # air data calc
+    true_airspeed_mps = math.sqrt(u_b_mps**2 + v_b_mps**2 + w_b_mps**2)
+    qbar_kgpms2 = 0.5*rho_interp_kgpm3 * true_airspeed_mps**2
+
+    if u_b_mps == 0 and w_b_mps == 0:
+        w_over_u = 0
+    else:
+        w_over_u = w_b_mps/u_b_mps
+    
+    if true_airspeed_mps == 0 and v_b_mps == 0:
+        v_over_VT = 0
+    else:
+        v_over_VT = v_b_mps/true_airspeed_mps
+
+    alpha_rad = math.atan(w_over_u)
+    beta_rad = math.asin(v_over_VT)
+    s_alpha = math.sin(alpha_rad)
+    c_alpha = math.cos(alpha_rad)
+    s_beta = math.sin(beta_rad)
+    c_beta = math.cos(beta_rad)
 
     # grav
     gz_n_mps2 = 9.81
+    #gz_interp_n_mps2 = fastInterp1(amod["alt_m"], amod['g_mps2'], h_m)
 
     # change coords of gravity to body
-    gx_b_mps2 = -math.sin(theta_rad) * gz_n_mps2
-    gy_b_mps2 = math.sin(phi_rad) * math.cos(theta_rad) * gz_n_mps2
-    gz_b_mps2 = math.cos(phi_rad) * math.cos(theta_rad) * gz_n_mps2
+    gx_b_mps2 = -s_theta * gz_n_mps2
+    gy_b_mps2 = s_phi * c_theta * gz_n_mps2
+    gz_b_mps2 = c_phi * c_theta * gz_n_mps2
 
-    # external forces (TBD)
-    Fx_b_kgmps2 = 0
-    Fy_b_kgmps2 = 0
-    Fz_b_kgmps2 = 0
+    # aerodynamic forces
+    drag_kgmps2 = vmod["CD_approx"]*qbar_kgpms2*vmod["Aref_m2"]
+    side_kgmps2 = 0
+    lift_kgmps2 = 0
+
+    #C_w_b = [c_alpha*c_beta, s_beta, s_alpha*c_beta
+    #         -c_alpha*s_beta, c_beta, s_alpha*s_beta
+    #         -s_alpha, 0, c_alpha]
+    
+    #C_b_w = [c_alpha*c_beta, -c_alpha*s_beta, -s_alpha
+    #         s_beta, c_beta, 0
+    #         s_alpha*c_beta, s_alpha*s_beta, c_alpha]
+
+    # external forces 
+    Fx_b_kgmps2 = -(c_alpha*c_beta*drag_kgmps2 - c_alpha*s_beta*side_kgmps2 - s_alpha*lift_kgmps2)
+    Fy_b_kgmps2 = -(s_beta*drag_kgmps2 + c_beta*side_kgmps2)
+    Fz_b_kgmps2 = -(s_alpha*c_beta*drag_kgmps2 - s_alpha*s_beta*side_kgmps2 + c_alpha*lift_kgmps2) #-2nd term might be pos
 
     # external moments (TBD)
     l_b_kgm2ps2 = 0
@@ -104,7 +154,7 @@ def flat_earth_eom(t, x, amod):
                 Jxz_b_kgm2 * l_b_kgm2ps2 + \
                     Jxz_b_kgm2 * n_b_kgm2ps2)/Den
     
-    # Kinematic Eqn (TBD)
+    # Kinematic Eqn 
     dx[6] = p_b_rps + math.sin(phi_rad)*math.tan(theta_rad)*q_b_rps + \
                         math.cos(phi_rad)*math.tan(theta_rad)*r_b_rps
     dx[7] = math.cos(phi_rad)*q_b_rps - \
@@ -112,9 +162,16 @@ def flat_earth_eom(t, x, amod):
     dx[8] = math.sin(phi_rad)/math.cos(theta_rad)*q_b_rps + \
             math.cos(phi_rad)/math.cos(theta_rad)*r_b_rps
 
-    # Position (Navigation) Eqn (TBD)
-    dx[9] = 0
-    dx[10] = 0
-    dx[11] = 0
+    # Position (Navigation) Eqn
+    dx[9] = c_theta*c_psi*u_b_mps + \
+            (-c_phi*s_psi + s_phi*s_theta*c_psi)*v_b_mps + \
+            (s_phi*s_psi + c_phi*s_theta*c_psi)*w_b_mps
+    dx[10] = c_theta*s_psi*u_b_mps + \
+            (c_phi*c_psi+s_psi*s_theta*s_psi)*v_b_mps + \
+            (-s_phi*c_psi + c_phi*s_theta*s_psi)*w_b_mps
+
+    dx[11] = -s_theta*u_b_mps + \
+            s_phi*c_theta*v_b_mps + \
+            c_phi*c_theta*w_b_mps
 
     return dx
