@@ -57,7 +57,7 @@ x0 = x0.transpose(); nx0 = x0.size
 
 # set time conditions
 t0_s = 0.0
-tf_s = 10.0 # 185
+tf_s = 100.0 # 185
 h_s = 0.01 # time step
 
 ## Numerically approximate the solutions to the governing equations
