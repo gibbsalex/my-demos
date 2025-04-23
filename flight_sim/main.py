@@ -1,18 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-
+import ussa1976
 from numerical_integrators import numerical_integration_methods
 from governing_eqns import flat_earth_eom
-
 from vehicle_models.sphere import BowlingBall
 from tools import plotter
+from tools.interpolators import fastInterp1
 
+atmosphere = ussa1976.compute()
+
+# get essential atmospheric data
+alt_m = atmosphere["z"].values
+rho_kgpm3 = atmosphere["rho"].values
+c_mps = atmosphere["cs"].values
+g_mps2 = ussa1976.core.compute_gravity(alt_m)
+
+# build the atmospheric model
+amod = {"alt_m": alt_m, "rho_kgpm3": rho_kgpm3, "c_mps" : c_mps, "g_mps2" : g_mps2}
+
+# build the vehicle model
 vmod = BowlingBall()
-
 print(f"The analytical terminal velocity is {vmod.Vterm_mps:.2f} m/s.")
-
-amod = vmod # for now
 
 # set inital conditions
 u0_bf_mps = 0.001
@@ -74,8 +83,8 @@ Rho_kgpm3 = np.zeros((nt_s, 1))
 
 for i, ele in enumerate(t_s):
     Altitude_m[i, 0] = -x[11, i]
-    #Cs_mps[i, 0] = fastInterp1()
-    #Rho_kgpm3[i, 0] = fastInterp1()
+    Cs_mps[i, 0] = fastInterp1(amod["alt_m"], amod["c_mps"], Altitude_m[i, 0])
+    Rho_kgpm3[i, 0] = fastInterp1(amod["alt_m"], amod["rho_kgpm3"], Altitude_m[i, 0])
 
 # Angle of Attack
 alpha_rad = np.zeros((nt_s, 1))

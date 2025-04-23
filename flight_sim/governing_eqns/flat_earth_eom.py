@@ -53,24 +53,25 @@ def flat_earth_eom(t, x, vmod, amod):
 
 
     # vehicle mass and moments of inertia
-    m_kg = vmod.m_kg # vmod["m_kg"]
-    Jxz_b_kgm2 = vmod.Jxz_b_kgm2 #vmod["Jxz_b_kgm2"]
-    Jxx_b_kgm2 = vmod.Jxx_b_kgm2 #vmod["Jxx_b_kgm2"]
-    Jyy_b_kgm2 = vmod.Jyy_b_kgm2 #vmod["Jyy_b_kgm2"]
-    Jzz_b_kgm2 = vmod.Jzz_b_kgm2 #vmod["Jzz_b_kgm2"]
+    m_kg = vmod.m_kg
+    Jxz_b_kgm2 = vmod.Jxz_b_kgm2
+    Jxx_b_kgm2 = vmod.Jxx_b_kgm2
+    Jyy_b_kgm2 = vmod.Jyy_b_kgm2
+    Jzz_b_kgm2 = vmod.Jzz_b_kgm2
 
     # current altitude
     h_m = -p3_n_m
 
     # atmosphere model 
-    rho_interp_kgpm3 = 1.2
-    #rho_interp_kgpm3 = fastInterp1(amod["alt_m"], amod["rho_kgpm3"], h_m)
-    #c_interp_mp2 = fastInterp1(amod["alt_m"], amod["c_mps"], h_m)
+    #rho_interp_kgpm3 = 1.2
+    rho_interp_kgpm3 = fastInterp1(amod["alt_m"], amod["rho_kgpm3"], h_m) # air density as a function of altitude
+    c_interp_mp2 = fastInterp1(amod["alt_m"], amod["c_mps"], h_m)
 
     # air data calc
-    true_airspeed_mps = math.sqrt(u_b_mps**2 + v_b_mps**2 + w_b_mps**2)
-    qbar_kgpms2 = 0.5*rho_interp_kgpm3 * true_airspeed_mps**2
+    true_airspeed_mps = math.sqrt(u_b_mps**2 + v_b_mps**2 + w_b_mps**2) # air speed could depend on wind speed
+    qbar_kgpms2 = 0.5*rho_interp_kgpm3 * true_airspeed_mps**2 # aerodynamic pressure
 
+    # necessary to avoid /0 in angle of attack and sideslip calculation
     if u_b_mps == 0 and w_b_mps == 0:
         w_over_u = 0
     else:
@@ -89,16 +90,16 @@ def flat_earth_eom(t, x, vmod, amod):
     c_beta = math.cos(beta_rad)
 
     # grav
-    gz_n_mps2 = 9.81
-    #gz_interp_n_mps2 = fastInterp1(amod["alt_m"], amod['g_mps2'], h_m)
+    #gz_n_mps2 = 9.81
+    gz_interp_n_mps2 = fastInterp1(amod["alt_m"], amod['g_mps2'], h_m)
 
     # change coords of gravity to body
-    gx_b_mps2 = -s_theta * gz_n_mps2
-    gy_b_mps2 = s_phi * c_theta * gz_n_mps2
-    gz_b_mps2 = c_phi * c_theta * gz_n_mps2
+    gx_b_mps2 = -s_theta * gz_interp_n_mps2 # gz_n_mps2
+    gy_b_mps2 = s_phi * c_theta * gz_interp_n_mps2 # gz_n_mps2
+    gz_b_mps2 = c_phi * c_theta * gz_interp_n_mps2 # gz_n_mps2
 
     # aerodynamic forces
-    drag_kgmps2 = vmod.CD_approx*qbar_kgpms2*vmod.Aref_m2
+    drag_kgmps2 = vmod.CD_approx*qbar_kgpms2*vmod.Aref_m2 
     side_kgmps2 = 0
     lift_kgmps2 = 0
 
