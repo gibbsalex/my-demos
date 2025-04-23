@@ -53,11 +53,11 @@ def flat_earth_eom(t, x, vmod, amod):
 
 
     # vehicle mass and moments of inertia
-    m_kg = vmod["m_kg"]
-    Jxz_b_kgm2 = vmod["Jxz_b_kgm2"]
-    Jxx_b_kgm2 = vmod["Jxx_b_kgm2"]
-    Jyy_b_kgm2 = vmod["Jyy_b_kgm2"]
-    Jzz_b_kgm2 = vmod["Jzz_b_kgm2"]
+    m_kg = vmod.m_kg # vmod["m_kg"]
+    Jxz_b_kgm2 = vmod.Jxz_b_kgm2 #vmod["Jxz_b_kgm2"]
+    Jxx_b_kgm2 = vmod.Jxx_b_kgm2 #vmod["Jxx_b_kgm2"]
+    Jyy_b_kgm2 = vmod.Jyy_b_kgm2 #vmod["Jyy_b_kgm2"]
+    Jzz_b_kgm2 = vmod.Jzz_b_kgm2 #vmod["Jzz_b_kgm2"]
 
     # current altitude
     h_m = -p3_n_m
@@ -98,7 +98,7 @@ def flat_earth_eom(t, x, vmod, amod):
     gz_b_mps2 = c_phi * c_theta * gz_n_mps2
 
     # aerodynamic forces
-    drag_kgmps2 = vmod["CD_approx"]*qbar_kgpms2*vmod["Aref_m2"]
+    drag_kgmps2 = vmod.CD_approx*qbar_kgpms2*vmod.Aref_m2
     side_kgmps2 = 0
     lift_kgmps2 = 0
 

@@ -5,21 +5,12 @@ import math
 from numerical_integrators import numerical_integration_methods
 from governing_eqns import flat_earth_eom
 
-from vehicle_models.sphere import spheres
+from vehicle_models.sphere import BowlingBall
+from tools import plotter
 
-r_sphere_m = 0.08
-m_sphere_kg = 5
-J_sphere_kgm2 = 0.4*m_sphere_kg*r_sphere_m**2
+vmod = BowlingBall()
 
-#amod = {"m_kg": 1, \
-#        "Jxz_b_kgm2": 0, \
-#            "Jxx_b_kgm2": J_sphere_kgm2, \
-#                "Jyy_b_kgm2": J_sphere_kgm2, \
-#                    "Jzz_b_kgm2": J_sphere_kgm2}
-
-vmod = spheres.BowlingBall()
-
-print(f"The analytical terminal velocity is{vmod['Vterm_mps']:.2f} m/s.")
+print(f"The analytical terminal velocity is {vmod.Vterm_mps:.2f} m/s.")
 
 amod = vmod # for now
 
@@ -76,7 +67,7 @@ True_Airspeed_mps = np.zeros((nt_s, 1))
 for i, elememt in enumerate(t_s):
     True_Airspeed_mps[i, 0] = math.sqrt(x[0, i]**2 + x[1, i]**2 + x[2, i]**2)
 
-# Altitidue, speed of sound, and air density
+# Altitude, speed of sound, and air density
 Altitude_m = np.zeros((nt_s, 1))
 Cs_mps = np.zeros((nt_s, 1))
 Rho_kgpm3 = np.zeros((nt_s, 1))
@@ -114,64 +105,10 @@ for i, ele in enumerate(t_s):
 
 print(f"numerical terminal velocity is {x[0, -1]:.2f} m/s.")
 
-# data plotting
-fig, axes = plt.subplots(2, 4, figsize=(10,6)) # 1 row, 2 cols
-
-# axial velocity u^b_CM/n
-axes[0, 0].plot(t_s, x[0,:])
-axes[0, 0].set_xlabel('Time [s]')
-axes[0, 0].set_ylabel('u [m/s]')
-axes[0, 0].grid(True)
-
-# axial velocity v^b_CM/n
-axes[0, 1].plot(t_s, x[1,:])
-axes[0, 1].set_xlabel('Time [s]')
-axes[0, 1].set_ylabel('v [m/s]')
-axes[0, 1].grid(True)
-
-# axial velocity w^b_CM/n
-axes[0, 2].plot(t_s, x[2,:])
-axes[0, 2].set_xlabel('Time [s]')
-axes[0, 2].set_ylabel('w [m/s]')
-axes[0, 2].grid(True)
-
-# roll angle, phi
-axes[0, 3].plot(t_s, x[6,:])
-axes[0, 3].set_xlabel('Time [s]')
-axes[0, 3].set_ylabel('phi [rad]')
-axes[0, 3].grid(True)
-
-# roll rate, p^b_b/n
-axes[1, 0].plot(t_s, x[3,:])
-axes[1, 0].set_xlabel('Time [s]')
-axes[1, 0].set_ylabel('p [rad/s]')
-axes[1, 0].grid(True)
-
-# pitch rate, q^b_b/n
-axes[1, 1].plot(t_s, x[4,:])
-axes[1, 1].set_xlabel('Time [s]')
-axes[1, 1].set_ylabel('q [rad/s]')
-axes[1, 1].grid(True)
-
-# yaw rate, r^b_b/n
-axes[1, 2].plot(t_s, x[5,:])
-axes[1, 2].set_xlabel('Time [s]')
-axes[1, 2].set_ylabel('r [rad/s]')
-axes[1, 2].grid(True)
-
-# pitch angle, theta
-axes[1, 3].plot(t_s, x[7,:])
-axes[1, 3].set_xlabel('Time [s]')
-axes[1, 3].set_ylabel('theta [rad]')
-axes[1, 3].grid(True)
-
-plt.tight_layout()
+plotter.state_layout(t_s, x)
 #plt.savefig('saved_figures/sphere_drop_test_1.png')
 
+plotter.traj_plot(x)
 
-ax2 = plt.figure(2).add_subplot(projection='3d')
-ax2.plot(x[9,:], x[10,:], x[11,:], label = 'traj')
-ax2.legend()
-plt.show()
 
 print("Simulation Complete")
