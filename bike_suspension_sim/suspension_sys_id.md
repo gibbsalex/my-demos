@@ -73,7 +73,10 @@ Dynamic model is a linear Infinite Impulse Response Filter(IIR)
 2. Run the least-squares estimate to get the parameters of the model.
 3. Put in TF form, and plot.
 
+![arx](images/arx_model.png)
+
 ### Step 2: Plot the Transfer Function on a Bode Plot
+
 
 Tools:
 
@@ -84,6 +87,9 @@ SciPy Bode()
 Test consistency of convergence
 
 ## Results
+
+Bode Plot Comparisons to the real data:
+![bode](images/bode_compare.png)
 
 ## Further Research
 
