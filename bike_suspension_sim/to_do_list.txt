@@ -1,0 +1,5 @@
+To do
+- export images and latex to pdf
+- why do the bodes not match? weird misalignment with their methods
+- Get SPA bode to match ARX model
+- jonjon: check plotting loglog, check fixed frequency ranges
