@@ -1,7 +1,18 @@
 # MTB Rear Shock Suspension System Identification
 
 ## Abstract
-Use System Identification techniques to parameterize the model of the mass-spring-damper that is in the rear-suspension of a mountain bike.
+
+Mountain bikes utilize a mass-spring-damper as rear-suspension to provide more control and comfort to the rider. In this investigation, we utilize two methods to identify the transfer function of the LTI-system that represents the rear-suspension system of a mountain bike. We show that...
+
+Directions:
+
+1 (easy) - we can identify the current tuning of the suspension system. 
+
+The current tuning dampens frequencies. The current tuning is defined as the spring constant(shock airpressure), damper coefficient(firmness setting).
+
+2 (hard) - how to adjust the tuning to actively dampen all frequencies
+
+we can actively adjust the tuning of the system from the current tuning to the desired tuning.
 
 ## Introduction
 
@@ -10,7 +21,7 @@ Determining the model of the suspension system could improve the performance of 
 
 Provide feedback to the rider on how to tune their bike to the optimal settings(air/spring pressure, damping firmness setting)
 
-Ideally the bode plot would attenuate the roughest frequencies. This looks like negative amplitude on the bode plot.
+Ideally the bode plot would attenuate the roughest frequencies. Attenuated signals have negative amplitude on the bode plot.
 
 ### Background
 
@@ -27,9 +38,11 @@ A good way to get an idea of the system response is to investigate the bode plot
 
 Bounded Goal: Plot a Bode plot of the system response, to analyze which frequencies of signals get amplified or attenuated.
 
+We utilize two methods to determine the transfer function that the system represents.
+
 ### Definitions
 
-System: The plant that takes the input signal and turns it into the output.
+System: The plant that takes the input signal and turns it into the output through dynamics.
 
 Input: The input to the plant is the force felt to the rear wheel.
 
@@ -64,8 +77,7 @@ Convergence of ETFE to SPA through using a weighting window to smooth a neighbor
 
 #### Idea 1.2: Building an Auto Regressive Exogeneous(ARX) Model
 
-Objective ---
-Estimate the parameters in a transfer function through least-squares.
+Use the Least-Squares method to estimate the parameters in a discrete-time transfer function.
 
 Dynamic model is a linear Infinite Impulse Response Filter(IIR)
 
@@ -73,23 +85,60 @@ Dynamic model is a linear Infinite Impulse Response Filter(IIR)
 2. Run the least-squares estimate to get the parameters of the model.
 3. Put in TF form, and plot.
 
+#### System Model Derivation of a Mass-Spring-Damper
+Equations of Motion:
+$$
+m \ddot x(t) + c \dot x(t) + k x(t) = F(t)
+$$
+
+Continuous-time TF:
+$$
+X(s) = \frac{1}{m s^2 + c s + k} F(s)
+$$
+
+Zero-order hold to convert to TF(z)(using MATLAB c2d).
+
+discrete TF:
+$$
+X(z) = \frac{b_1 z + b_2}{z^2 + a_1 z + a_2} F(z)
+$$
+
+difference eqn:
+$$
+x(k + 2) + a_1 x(k + 1) + a_2 x(k) = b_1 F(k + 1) + b_2 F(k + 2)\\
+
+\text{is equivalent to}\\
+
+x(t) + a_1 x(t - 1) + a_2 x(t - 2) = b_1 F(t - 1) + b_2 F(t)\\
+
+\text{and}\\
+
+x(t) = -a_1 x(t - 1) - a_2 x(t - 2) + b_1 F(t - 1) + b_2 F(t)
+$$
+
+Simulated response of a system given a random input force:
+
 ![arx](images/arx_model.png)
 
 ### Step 2: Plot the Transfer Function on a Bode Plot
 
+Using SciPy Tools, we plot the system response from all the models that we are investigating.
 
-Tools:
+![bode](images/bode_compare.png)
+This image shows inconsitencies between the models.
 
-semilogx()
-SciPy Bode()
 
 ### Step 3: Test the Reliability of Data
 Test consistency of convergence
 
 ## Results
 
+Real Example: Data collected from an MTB
+
+Using actual data the results of these methods show.
+
+
 Bode Plot Comparisons to the real data:
-![bode](images/bode_compare.png)
 
 ## Further Research
 
