@@ -3,3 +3,14 @@ To do
 - why do the bodes not match? weird misalignment with their methods
 - Get SPA bode to match ARX model
 - jonjon: check plotting loglog, check fixed frequency ranges
+
+Meeting Notes:
+
+Topics:
+1. Project Direction:
+-- easy -v, identify the suspension tuning
+-- hard -v, control the suspension tuning
+
+2. Procedure and goals for the project (walking through .ipynb)
+3. Methods for TF identification
+4. Current Technologies 
