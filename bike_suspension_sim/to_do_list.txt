@@ -14,3 +14,38 @@ Topics:
 2. Procedure and goals for the project (walking through .ipynb)
 3. Methods for TF identification
 4. Current Technologies 
+
+
+Biggest thing is project direction... I have flushed out the idea, and I need to know how to make this next thing useful
+
+Are there careers doing this? What do I search for?
+
+Check out the power spectrum, PSD
+
+Dial in inputs from a few case inputs
+
+Improved model with better mass estimates
+
+Look at fox guy's GitHub
+
+Data from Matt
+
+vscode copilot
+
+Force input of the wheel to viz and forces
+
+Careers: Vehicle dynamics engineer, real world and modeling, controls at jobe, modeling in python, designing systems,
+
+spring curve, damper curve, leverage ratio, 3min ride 
+
+How to tune the suspension to something i like
+
+SPA
+
+PSD signal - identifies the strength of the frequencies
+
+TMD - https://www.pinkbike.com/news/fox-are-developing-a-tuned-mass-damper-for-mountain-bikes.html
+
+Fox Guy - https://github.com/nrsyed/half-car
+	Simulating a system. Very cool python structure.
+	Classic dynamics - equations of motion, propogate with euler
