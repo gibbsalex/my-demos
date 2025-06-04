@@ -1,0 +1,7 @@
+This was on a local trail in Santa Cruz on my 2024(?) stumpjumper evo
+The full export is at 500Hz, it's pretty big so I also attached a 100 Hz downsampled file
+a0 is the fork potentiometer data
+b0 is the shock potentiometer data, I applied the motion ratio to this an saved that as sWheelr for you as well.
+This should be helpful or at least interesting to see what kind of shaft and wheelspeeds you see on the suspension side of things.
+
+I will try to send you some dyno data as well, it might not be this exact suspension setup, but at least something to get you a ballpark. Then you can do some handwavy force calcs on this trail data with spring and damper F/x, and F/v curves. It will be cool to use this dyno data for you model too instead of hardcoding some spring rate and damping coefficient. 

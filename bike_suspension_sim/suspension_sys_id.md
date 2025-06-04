@@ -149,3 +149,20 @@ Bode Plot Comparisons to the real data:
 3. Rider-to-bike Relationship: Does the rider trust a shock that changes suspension characteristics.
 
 ## Resources
+
+
+$$
+\tau = -I_p \ddot \phi \\
+$$
+
+$$
+I_{b} \ddot \theta = -I_p \ddot \phi - L \cdot F \sin(\alpha)
+$$
+
+$$
+-\frac{s^2I_p + L \cdot F}{s^2 I_b}
+$$
+
+$$
+I_b \ddot \theta
+$$
