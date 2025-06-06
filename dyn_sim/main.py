@@ -38,6 +38,7 @@ if __name__ == "__main__":
     euler_ball_state = np.array(euler_ball_state)
     rk_ball_state = np.array(rk_ball_state)
 
+    plt.figure(1)
     plt.subplot(2, 1, 1)
     plt.plot(euler_ball_state[:,0])
     plt.plot(rk_ball_state[:,0])
