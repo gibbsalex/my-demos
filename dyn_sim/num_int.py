@@ -1,10 +1,12 @@
 
 
-def Euler(model, h):
+def Euler(model, h, cntrl = None):
     # h = step size
 
     x = model.state
     x_dot = model.dyn(x)
+
+    clsd_loop = x_dot + cntrl
 
     next_state = x + h * x_dot
 

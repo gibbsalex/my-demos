@@ -68,11 +68,11 @@ class Cube():
     def __str__(self):
         return f"th_x = {np.round(self.state[0],2)}, th_y = {np.round(self.state[1],2)}, th_z = {np.round(self.state[2],2)}, omg_x = {np.round(self.state[3],2)}, omg_y = {np.round(self.state[4],2)}, omg_z = {np.round(self.state[5],2)}"
     
-    def dyn(self, state):
+    def dyn(self):
 
-        omg_x = state[3]
-        omg_y = state[4]
-        omg_z = state[5]
+        omg_x = self.state[3]
+        omg_y = self.state[4]
+        omg_z = self.state[5]
 
         # sum M = I * alpha
         a_x = 0 # right now zero but it should be sum of torque / I_rot
