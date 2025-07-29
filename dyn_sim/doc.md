@@ -25,7 +25,7 @@ x ->
 
 Numerical Integration
 
-
+x_t+1 = x_t + x_dot * h
 
 
 # Basic Example

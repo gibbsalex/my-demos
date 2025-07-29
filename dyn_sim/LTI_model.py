@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 # ball bounce example
 # actuator sense when close and applies impact ground contact
 
+# Problem #1: This model cannot be state dependent...
+# not sure how to add a variable into a class.. that changes as the object parameters change
+
 class Model():
     def __init__(self, h, x):
         self.h = h
@@ -27,7 +30,8 @@ class Model():
 
         x_t2 = self.x[-1] + self.h * self.dyn
 
-        if x_t2[0] < 0: # check if ball has bounced
+        # check if ball has bounced
+        if x_t2[0] < 0: 
             x_t2 = -1 * x_t2
         
         self.x.append(x_t2)
