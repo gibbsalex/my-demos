@@ -70,5 +70,8 @@ while(t < 10):
     x = np.hstack((x, next_x.reshape(-1, 1)))
     
     t += delta_t
+
+
+## DATA VIZ
 # Plot state over time
 # vpython?
