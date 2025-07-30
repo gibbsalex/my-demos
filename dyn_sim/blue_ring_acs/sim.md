@@ -1,3 +1,12 @@
+---
+layout: post
+title: "ACS Simulation Tester"
+date: 2025-07-30
+categories: Control CATEGORY-2
+usemathjax: true
+---
+
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
